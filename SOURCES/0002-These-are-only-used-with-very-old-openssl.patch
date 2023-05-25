@@ -1,0 +1,49 @@
+From 118ee11ebd2c5b19c4ad02bb561598dc1a88fd25 Mon Sep 17 00:00:00 2001
+From: Julian Brown <julian.brown@cpanel.net>
+Date: Fri, 29 May 2020 16:00:45 -0500
+Subject: [PATCH] These are only used with very old openssl
+
+---
+ src/osdep/unix/ssl_unix.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/osdep/unix/ssl_unix.c b/src/osdep/unix/ssl_unix.c
+index a01769c..aab843b 100644
+--- a/src/osdep/unix/ssl_unix.c
++++ b/src/osdep/unix/ssl_unix.c
+@@ -59,14 +59,15 @@ typedef struct ssl_stream {
+ static SSLSTREAM *ssl_start(TCPSTREAM *tstream,char *host,unsigned long flags);
+ static char *ssl_start_work (SSLSTREAM *stream,char *host,unsigned long flags);
+ static int ssl_open_verify (int ok,X509_STORE_CTX *ctx);
++#if OPENSSL_VERSION_NUMBER < 0x10100000
+ static char *ssl_validate_cert (X509 *cert,char *host);
+ static long ssl_compare_hostnames (unsigned char *s,unsigned char *pat);
++#endif
+ static char *ssl_getline_work (SSLSTREAM *stream,unsigned long *size,
+ 			       long *contd);
+ static long ssl_abort (SSLSTREAM *stream);
+ static RSA *ssl_genkey (SSL *con,int export,int keylength);
+ 
+-
+ /* Secure Sockets Layer network driver dispatch */
+ 
+ static struct ssl_driver ssldriver = {
+@@ -369,6 +370,7 @@ static char *ssl_validate_cert (X509 *cert,char *host)
+  * Returns: T if pattern matches base, else NIL
+  */
+ 
++#if OPENSSL_VERSION_NUMBER < 0x10100000
+ static long ssl_compare_hostnames (unsigned char *s,unsigned char *pat)
+ {
+   long ret = NIL;
+@@ -389,6 +391,7 @@ static long ssl_compare_hostnames (unsigned char *s,unsigned char *pat)
+   }
+   return ret;
+ }
++#endif
+ 
+ /* SSL receive line
+  * Accepts: SSL stream
+-- 
+2.25.1
+
