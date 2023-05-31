@@ -1,0 +1,25 @@
+From fae317e7d9fa5f80413e5032cf8dc333666adf63 Mon Sep 17 00:00:00 2001
+From: Kurt Newman <kurt.newman@cpanel.net>
+Date: Thu, 28 Jan 2016 00:37:15 -0600
+Subject: [PATCH] Only build the c-client library
+
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 5fcf1dd..3fd61a6 100644
+--- a/Makefile
++++ b/Makefile
+@@ -678,7 +678,7 @@ an ua:
+ 	$(TOOLS)/$@ "$(LN)" src/tmail tmail
+ 	$(LN) $(TOOLS)/$@ .
+ 
+-build:	OSTYPE rebuild rebuildclean bundled
++build:	OSTYPE rebuild
+ 
+ OSTYPE:
+ 	@$(MAKE) ip$(IP)
+-- 
+2.7.0
+

@@ -1,0 +1,26 @@
+From 7f548959c10a7cab841cdac816d21fa924467e6d Mon Sep 17 00:00:00 2001
+From: Julian Brown <julian.brown@cpanel.net>
+Date: Fri, 29 May 2020 15:04:33 -0500
+Subject: [PATCH 1/3] add extra to tmp buffer
+
+---
+ src/osdep/unix/tcp_unix.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/osdep/unix/tcp_unix.c b/src/osdep/unix/tcp_unix.c
+index 2d834c2..6b1fb2a 100644
+--- a/src/osdep/unix/tcp_unix.c
++++ b/src/osdep/unix/tcp_unix.c
+@@ -970,7 +970,8 @@ char *tcp_canonical (char *name)
+ 
+ char *tcp_name (struct sockaddr *sadr,long flag)
+ {
+-  char *ret,*t,adr[MAILTMPLEN],tmp[MAILTMPLEN];
++#define EXTRA 512
++  char *ret,*t,adr[MAILTMPLEN],tmp[MAILTMPLEN + EXTRA];
+   sprintf (ret = adr,"[%.80s]",ip_sockaddrtostring (sadr));
+   if (allowreversedns) {
+     blocknotify_t bn = (blocknotify_t)mail_parameters(NIL,GET_BLOCKNOTIFY,NIL);
+-- 
+2.25.1
+
