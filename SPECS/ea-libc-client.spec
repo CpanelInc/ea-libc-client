@@ -70,6 +70,10 @@ This is intended for internal builds only and will not be delivered to customers
 %endif
 
 %build
+%if 0%{?rhel} >= 10
+export EXTRACFLAGS="-Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types $EXTRACFLAGS"
+%endif
+
 # Kerberos setup
 test -f %{_root_sysconfdir}/profile.d/krb5-devel.sh && source %{_root_sysconfdir}/profile.d/krb5-devel.sh
 test -f %{_root_sysconfdir}/profile.d/krb5.sh && source %{_root_sysconfdir}/profile.d/krb5.sh
@@ -110,6 +114,7 @@ export EXTRALDFLAGS="$EXTRALDFLAGS $(pkg-config --libs openssl 2>/dev/null) -Wl,
 # headache.
 export EXTRALDFLAGS="$EXTRALDFLAGS $(pkg-config --libs openssl 2>/dev/null) '-Wl,--build-id=uuid'"
 %endif
+
 
 echo -e "y\ny" | \
 make %{?_smp_mflags} lnp \
